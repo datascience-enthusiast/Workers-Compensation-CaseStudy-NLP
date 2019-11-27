@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[141]:
+# In[259]:
 
 
 import numpy as np
@@ -14,7 +14,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import NMF, TruncatedSVD
 
 
-# In[142]:
+# In[260]:
 
 
 # For Not Displaying warnings
@@ -25,13 +25,13 @@ from scipy import stats
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[143]:
+# In[261]:
 
 
 from pyxlsb import open_workbook as open_xlsb
 
 
-# In[144]:
+# In[262]:
 
 
 # load the dataset.
@@ -48,27 +48,27 @@ df = pd.DataFrame(df[1:], columns=df[0])
 df.head()
 
 
-# In[145]:
+# In[263]:
 
 
 # list of column names.
 df.columns
 
 
-# In[146]:
+# In[264]:
 
 
 # Shape of Data
 df.shape
 
 
-# In[147]:
+# In[265]:
 
 
 df['Occupation'].isnull().sum()
 
 
-# In[148]:
+# In[266]:
 
 
 # take out the 'Unique_ID' and 'Case Number' column.
@@ -76,7 +76,7 @@ df['Occupation'].isnull().sum()
 df = df.drop(['Unique_ID', 'Case Number', 'Date of Birth', 'Occupation'], axis=1)
 
 
-# In[149]:
+# In[267]:
 
 
 #Creating dataframe with number of missing values
@@ -100,19 +100,19 @@ missing_val.to_csv("Missing_percentage.csv", index = False)
 missing_val
 
 
-# In[150]:
+# In[268]:
 
 
 df = df.rename(columns=lambda x: x.replace(' ', ''))
 
 
-# In[151]:
+# In[269]:
 
 
 categorical_variables = ['LossType', 'Status_Updated','Litigation','Carrier', 'AccidentState','Sector/Industry', 'HighCost']
 
 
-# In[152]:
+# In[270]:
 
 
 for col in categorical_variables:
@@ -124,13 +124,13 @@ for col in categorical_variables:
     print("+++++++++++++++++++++++++++++++")
 
 
-# In[153]:
+# In[271]:
 
 
 description_text = pd.DataFrame(df['CauseDescription'].fillna(''))
 
 
-# In[154]:
+# In[272]:
 
 
 for col in categorical_variables:
@@ -138,13 +138,13 @@ for col in categorical_variables:
     description_text[col] = df[col]
 
 
-# In[155]:
+# In[273]:
 
 
 description_text.isnull().sum()
 
 
-# In[156]:
+# In[274]:
 
 
 for col in categorical_variables:
@@ -153,13 +153,13 @@ for col in categorical_variables:
         
 
 
-# In[157]:
+# In[275]:
 
 
 description_text.isnull().sum()
 
 
-# In[158]:
+# In[276]:
 
 
 contraction_mapping = {"ain't": "is not", "aren't": "are not","can't": "cannot", "'cause": "because", "could've": "could have", "couldn't": "could not",
@@ -187,7 +187,7 @@ contraction_mapping = {"ain't": "is not", "aren't": "are not","can't": "cannot",
                            "you're": "you are", "you've": "you have"}
 
 
-# In[159]:
+# In[277]:
 
 
 from nltk.corpus import stopwords
@@ -214,13 +214,13 @@ def text_cleaner(text):
     return (" ".join(long_words)).strip()
 
 
-# In[160]:
+# In[278]:
 
 
 description_text['cleaned_description'] = description_text.CauseDescription.apply(text_cleaner)
 
 
-# In[161]:
+# In[279]:
 
 
 from wordcloud import WordCloud
@@ -233,70 +233,70 @@ plt.axis("off")
 plt.show()
 
 
-# In[162]:
+# In[280]:
 
 
 # Converting all datatypes
 description_text.Litigation.value_counts()
 
 
-# In[163]:
+# In[281]:
 
 
 description_text['Litigation'] = description_text['Litigation'].replace(["YES", "Yes"], 1)
 description_text['Litigation'] = description_text['Litigation'].replace(["NO", "No"], 0)
 
 
-# In[164]:
+# In[282]:
 
 
 description_text.Litigation.value_counts()
 
 
-# In[165]:
+# In[283]:
 
 
 description_text.Status_Updated.unique()
 
 
-# In[166]:
+# In[284]:
 
 
 description_text['Status_Updated'] = description_text['Status_Updated'].replace(["Closed", "Closed    ",0.0], 0)
 description_text['Status_Updated'] = description_text['Status_Updated'].replace(["Open", "Open "], 1)
 
 
-# In[167]:
+# In[285]:
 
 
 description_text.Status_Updated.value_counts()
 
 
-# In[168]:
+# In[286]:
 
 
 description_text.Carrier.unique()
 
 
-# In[169]:
+# In[287]:
 
 
 description_text['Carrier'] = description_text['Carrier'].apply(lambda x: x.replace('Carrier ', ''))
 
 
-# In[170]:
+# In[288]:
 
 
 description_text.Carrier.value_counts()
 
 
-# In[171]:
+# In[289]:
 
 
 description_text['Sector/Industry'].unique()
 
 
-# In[172]:
+# In[290]:
 
 
 description_text['Sector/Industry'] = description_text['Sector/Industry'].replace(["Industrials"], "ID")
@@ -309,13 +309,13 @@ description_text['Sector/Industry'] = description_text['Sector/Industry'].replac
 description_text['Sector/Industry'] = description_text['Sector/Industry'].replace(["Communication Services"], "CSV")
 
 
-# In[173]:
+# In[291]:
 
 
 description_text['Sector/Industry'].unique()
 
 
-# In[174]:
+# In[292]:
 
 
 # # wordcloud for Cases with Litigation 0
@@ -326,13 +326,13 @@ Litigation_0_df.head()
 Litigation_0_df['cleaned_description'] = Litigation_0_df.CauseDescription.apply(text_cleaner)
 
 
-# In[175]:
+# In[293]:
 
 
 description_text.Litigation.value_counts()
 
 
-# In[176]:
+# In[294]:
 
 
 plt.figure(figsize = (12, 8))
@@ -344,7 +344,7 @@ plt.axis("off")
 plt.show()
 
 
-# In[177]:
+# In[295]:
 
 
 # # wordcloud for Cases with Litigation 1
@@ -363,7 +363,7 @@ plt.axis("off")
 plt.show()
 
 
-# In[178]:
+# In[296]:
 
 
 import string
@@ -392,7 +392,7 @@ description_text["Desc_num_words_CauseDescription"] = description_text["CauseDes
 description_text["mean_word_len"] = description_text["CauseDescription"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
 
 
-# In[179]:
+# In[297]:
 
 
 plt.figure(figsize=(20,10))
@@ -400,7 +400,7 @@ sns.set(font_scale = 2)
 sns.countplot(description_text.Litigation)
 
 
-# In[180]:
+# In[298]:
 
 
 # Frequency Countplot for Categorical variable
@@ -411,7 +411,7 @@ for i in categorical_variables:
     sns.factorplot(data=description_text, x=i ,kind='count', size=6, aspect=2)
 
 
-# In[181]:
+# In[299]:
 
 
 import seaborn as sns
@@ -422,7 +422,7 @@ for col in categorical_variables:
     sns.catplot(x=col, y="HighCost", data=df_cat.reset_index(), kind="point", height=6, aspect=2)
 
 
-# In[182]:
+# In[300]:
 
 
 ## Comparinson Between Litigation and HighCost
@@ -431,7 +431,7 @@ for i in ['Litigation','HighCost']:
     sns.factorplot(data=description_text,x=i,kind='count',size=4,aspect=2)
 
 
-# In[183]:
+# In[301]:
 
 
 #loop for ANOVA test Since the target variable is continuous
@@ -443,7 +443,7 @@ for i in ['Litigation','HighCost']:
 # there's high correlation between Litigation and ClaimClost
 
 
-# In[184]:
+# In[302]:
 
 
 # vectorization
@@ -459,7 +459,7 @@ tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 2),
                                    max_df = 0.6, min_df=0.001)
 
 
-# In[185]:
+# In[303]:
 
 
 # transform my predictors
@@ -467,68 +467,68 @@ cv_data = count_vectorizer.fit_transform(description_text.cleaned_description)
 tfidf_data = tfidf_vectorizer.fit_transform(description_text.cleaned_description)
 
 
-# In[186]:
+# In[304]:
 
 
 len(count_vectorizer.vocabulary_)
 
 
-# In[187]:
+# In[305]:
 
 
 len(tfidf_vectorizer.vocabulary_)
 
 
-# In[188]:
+# In[306]:
 
 
 cv_data.shape
 
 
-# In[189]:
+# In[307]:
 
 
 description_text.shape
 
 
-# In[190]:
+# In[308]:
 
 
 numerical_columns = ['ClaimCost', 'LossDate', 'ClosedDate', 'ReportDate']
 
 
-# In[191]:
+# In[309]:
 
 
 numerical_df = df[numerical_columns]
 
 
-# In[192]:
+# In[310]:
 
 
 numerical_df.info()
 
 
-# In[193]:
+# In[311]:
 
 
 numerical_df['LossDate'] = numerical_df['LossDate'].fillna(int(numerical_df['LossDate'].mean()))
 
 
-# In[194]:
+# In[312]:
 
 
 numerical_df['ReportDate'] = pd.to_numeric(numerical_df['ReportDate'], errors='coerce')
 numerical_df['ReportDate'] = numerical_df['ReportDate'].fillna(int(numerical_df['ReportDate'].mean()))
 
 
-# In[195]:
+# In[313]:
 
 
 numerical_df['ClaimCost'] = numerical_df.ClaimCost.fillna(numerical_df['ClaimCost'].mean())
 
 
-# In[196]:
+# In[314]:
 
 
 from pyxlsb import convert_date
@@ -540,13 +540,13 @@ numerical_df['ReportDate'] = numerical_df['ReportDate'].apply(f)
 numerical_df['ClosedDate'] = numerical_df['ClosedDate'].apply(f)
 
 
-# In[197]:
+# In[315]:
 
 
 numerical_df.isnull().sum()
 
 
-# In[198]:
+# In[316]:
 
 
 def seasons(x):
@@ -568,7 +568,7 @@ def week(x):
         return 'weekend'
 
 
-# In[199]:
+# In[317]:
 
 
 ## Deriving new values like year, month, day_of_the_week, season, week from date
@@ -583,7 +583,7 @@ for col in numerical_df.columns:
         numerical_df[col+'_week'] = numerical_df[col+"_day_of_week"].apply(week)
 
 
-# In[200]:
+# In[318]:
 
 
 # Create new variable which takes into account the difference between Date when loss occured and Incident Report Date
@@ -592,34 +592,34 @@ numerical_df['Diff_Days_Loss_Report'] = numerical_df['ReportDate'] - numerical_d
 numerical_df['Diff_Days_Loss_Report'] = numerical_df['Diff_Days_Loss_Report']/np.timedelta64(1,'D')
 
 
-# In[201]:
+# In[319]:
 
 
 numerical_df['Diff_Days_Loss_Closed'] = numerical_df['ClosedDate'] - numerical_df['LossDate']
 numerical_df['Diff_Days_Loss_Closed'] = numerical_df['Diff_Days_Loss_Closed']/np.timedelta64(1,'D')
 
 
-# In[202]:
+# In[320]:
 
 
 numerical_df['Diff_Days_Report_Closed'] = numerical_df['ClosedDate'] - numerical_df['ReportDate']
 numerical_df['Diff_Days_Report_Closed'] = numerical_df['Diff_Days_Report_Closed']/np.timedelta64(1,'D')
 
 
-# In[203]:
+# In[321]:
 
 
 # Drop Date Columns since we've extracted all possible information from them 
 numerical_df = numerical_df.drop(['ClosedDate', 'ReportDate', 'LossDate'], axis = 1)
 
 
-# In[204]:
+# In[322]:
 
 
 numerical_df.head()
 
 
-# In[205]:
+# In[323]:
 
 
 continous_column_names = ['ClaimCost', 'Diff_Days_Loss_Report', 'Diff_Days_Loss_Closed', 'Diff_Days_Report_Closed']
@@ -630,19 +630,19 @@ for i,col in enumerate(continous_column_names):
     sns.lmplot(x=col, y="ClaimCost", data=numerical_df, aspect=2, height=8)
 
 
-# In[206]:
+# In[324]:
 
 
 description_text.shape
 
 
-# In[207]:
+# In[325]:
 
 
 numerical_df.shape
 
 
-# In[208]:
+# In[326]:
 
 
 categorical_variables.remove('Litigation')
@@ -650,7 +650,7 @@ categorical_variables.remove('HighCost')
 categorical_variables
 
 
-# In[209]:
+# In[327]:
 
 
 ##################### One hot Encoding #####################
@@ -658,13 +658,13 @@ categorical_variables
 description_text_encoded = pd.get_dummies(data = description_text, columns = categorical_variables)
 
 
-# In[210]:
+# In[328]:
 
 
 description_text_encoded.columns
 
 
-# In[211]:
+# In[329]:
 
 
 ##################### One hot Encoding #####################
@@ -676,13 +676,13 @@ numerical_df = pd.get_dummies(data = numerical_df, columns = ['LossDate_year', '
        'ReportDate_day_of_week', 'ReportDate_seasons', 'ReportDate_week'])
 
 
-# In[212]:
+# In[330]:
 
 
 numerical_df.columns
 
 
-# In[213]:
+# In[331]:
 
 
 # combining both dataframes
@@ -690,57 +690,57 @@ full_df = pd.concat([description_text_encoded, numerical_df], axis=1)
 full_df.head()
 
 
-# In[214]:
+# In[332]:
 
 
 # Combining Sentence Vectors to Complete Dataframe
 count_vect_df = pd.DataFrame(cv_data.todense(), columns=count_vectorizer.get_feature_names())
 
 
-# In[215]:
+# In[333]:
 
 
 tfidf_vect_df = pd.DataFrame(tfidf_data.todense(), columns=tfidf_vectorizer.get_feature_names())
 
 
-# In[216]:
+# In[334]:
 
 
 full_df_with_count_vect = pd.concat([full_df, count_vect_df], axis=1)
 
 
-# In[217]:
+# In[335]:
 
 
 full_df_with_tfidf_vect = pd.concat([full_df, tfidf_vect_df], axis=1)
 
 
-# In[218]:
+# In[336]:
 
 
 full_df_with_count_vect.head(1)
 
 
-# In[219]:
+# In[337]:
 
 
 full_df_with_count_vect.shape
 
 
-# In[220]:
+# In[338]:
 
 
 full_df_with_count_vect = full_df_with_count_vect.drop(['CauseDescription', 'cleaned_description'], axis=1)
 
 
-# In[221]:
+# In[339]:
 
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report
 
 
-# In[222]:
+# In[340]:
 
 
 #Creating dataframe with number of missing values
@@ -764,19 +764,54 @@ missing_val.to_csv("Missing_percentage.csv", index = False)
 missing_val
 
 
-# In[223]:
+# In[341]:
 
 
 full_df_with_count_vect = full_df_with_count_vect.drop(['Diff_Days_Report_Closed', 'Diff_Days_Loss_Closed'],axis = 1)
 
 
-# In[224]:
+# In[342]:
 
 
 full_df_with_count_vect['mean_word_len'] = full_df_with_count_vect['mean_word_len'].fillna(full_df_with_count_vect['mean_word_len'].mean())
 
 
-# In[225]:
+# In[343]:
+
+
+########################## Evaluation Metrics ##########################3
+
+
+def scores(y, y_):
+    print("Confusion Matrix : ",end='\n')
+    print(metrics.confusion_matrix(y, y_))
+   
+    print('Accuracy : ', metrics.accuracy_score(y, y_), end='\n')
+    
+    print('Classification Report : ', end='\n')
+    print(metrics.classification_report(y, y_))
+
+def test_scores(model):
+    print('####################### Training Data Score ######################')
+    print()
+    #Predicting result on Training data
+    y_pred = model.predict(X_train)
+    scores(y_train,y_pred)
+    print()
+    print('####################### Testing Data Score ######################')
+    print()
+    # Evaluating on Test Set
+    y_pred = model.predict(X_test)
+    scores(y_test,y_pred)
+    
+    #Comparison Dataframe
+    model_eval = pd.DataFrame({'predicted':y_pred, 'actual': y_test})
+    
+    #Scatter plot of Actual vs Predicted
+    ax = sns.lmplot(x="predicted", y="actual", data=model_eval)
+
+
+# In[344]:
 
 
 ########## Model for HighCost #############
@@ -786,7 +821,7 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split( full_df_with_count_vect.iloc[:, full_df_with_count_vect.columns != 'HighCost'], full_df_with_count_vect['HighCost'], test_size = 0.2, random_state = 1)
 
 
-# In[226]:
+# In[345]:
 
 
 # import the ML algorithm
@@ -799,36 +834,27 @@ LogReg = LogisticRegression()
 LogReg.fit(X_train, y_train)
 
 
-# In[227]:
+# In[346]:
 
 
 # Do Prediction
 y_pred = LogReg.predict(X_test)
 
 
-# In[228]:
-
-
-# Confusion Matrix
-from sklearn import metrics
-metrics.confusion_matrix(y_test, y_pred)
-
-
-# In[229]:
+# In[347]:
 
 
 print("Test set accuracy - ", metrics.accuracy_score(y_test, y_pred))
 print("Train set accuracy - ", metrics.accuracy_score(y_train, LogReg.predict(X_train)))
 
 
-# In[230]:
+# In[348]:
 
 
-# Classification Report
-print(metrics.classification_report(y_test, y_pred))
+test_scores(LogReg)
 
 
-# In[231]:
+# In[349]:
 
 
 # Apply RandomForest Classifier Algo
@@ -837,14 +863,14 @@ clf = RandomForestClassifier(n_estimators=100)
 clf.fit(X_train, y_train)
 
 
-# In[232]:
+# In[350]:
 
 
 # Do Prediction
 y_pred_rf = clf.predict(X_test)
 
 
-# In[233]:
+# In[351]:
 
 
 # Confusion Matrix
@@ -852,33 +878,32 @@ from sklearn import metrics
 metrics.confusion_matrix(y_test, y_pred_rf)
 
 
-# In[234]:
+# In[352]:
 
 
 print("Test set accuracy - ", metrics.accuracy_score(y_test, y_pred_rf))
 print("Train set accuracy - ", metrics.accuracy_score(y_train, clf.predict(X_train)))
 
 
-# In[235]:
+# In[353]:
 
 
-# Classification Report
-print(metrics.classification_report(y_test, y_pred_rf))
+test_scores(clf)
 
 
-# In[236]:
+# In[354]:
 
 
 #### Achieved almots 100% accuracy on Test as well as Train Dataset for Model which Predicts HighCost
 
 
-# In[237]:
+# In[355]:
 
 
 ######### Model for Litigation #########
 
 
-# In[238]:
+# In[356]:
 
 
 ######################## Model Building #####################
@@ -887,7 +912,7 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split( full_df_with_count_vect.iloc[:, full_df_with_count_vect.columns != 'Litigation'], full_df_with_count_vect['Litigation'], test_size = 0.2, random_state = 1)
 
 
-# In[239]:
+# In[357]:
 
 
 # import the ML algorithm
@@ -900,36 +925,27 @@ LogReg = LogisticRegression()
 LogReg.fit(X_train, y_train)
 
 
-# In[240]:
+# In[358]:
 
 
 # Do Prediction
 y_pred = LogReg.predict(X_test)
 
 
-# In[241]:
-
-
-# Confusion Matrix
-from sklearn import metrics
-metrics.confusion_matrix(y_test, y_pred)
-
-
-# In[242]:
+# In[359]:
 
 
 print("Test set accuracy - ", metrics.accuracy_score(y_test, y_pred))
 print("Train set accuracy - ", metrics.accuracy_score(y_train, LogReg.predict(X_train)))
 
 
-# In[243]:
+# In[360]:
 
 
-# Classification Report
-print(metrics.classification_report(y_test, y_pred))
+test_scores(LogReg)
 
 
-# In[244]:
+# In[361]:
 
 
 # Apply RandomForest Classifier Algo
@@ -938,14 +954,14 @@ clf = RandomForestClassifier(n_estimators=100)
 clf.fit(X_train, y_train)
 
 
-# In[245]:
+# In[362]:
 
 
 # Do Prediction
 y_pred_rf = clf.predict(X_test)
 
 
-# In[246]:
+# In[363]:
 
 
 # Confusion Matrix
@@ -953,21 +969,20 @@ from sklearn import metrics
 metrics.confusion_matrix(y_test, y_pred_rf)
 
 
-# In[247]:
+# In[364]:
 
 
 print("Test set accuracy - ", metrics.accuracy_score(y_test, y_pred_rf))
 print("Train set accuracy - ", metrics.accuracy_score(y_train, clf.predict(X_train)))
 
 
-# In[248]:
+# In[365]:
 
 
-# Classification Report
-print(metrics.classification_report(y_test, y_pred_rf))
+test_scores(clf)
 
 
-# In[249]:
+# In[366]:
 
 
 #### Conclsuion : 
@@ -983,4 +998,10 @@ print(metrics.classification_report(y_test, y_pred_rf))
     #3) Applied Textual Preprocessing and cleaning techniques to create features from CauseDescription Sentences
     #4) Using NLP - Bag of Words (Count/TF IDF Vectorizer) Transformed CauseDescription Sentences to Vector Representations
     
+
+
+# In[ ]:
+
+
+
 
