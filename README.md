@@ -11,7 +11,11 @@
 5) Proved that litigation is the key driver of high cost claims using statistical analysis (ANOVA) and graphs.
 
 6) Did alot of Feaure Engineering and built new features to assist the model to better understand the patterns inside the data:
-    a) Dervied new features Like Year, Month, Season from Variables including Date (Report, Loss, Closed Date)
+    
+	a) Dervied new features Like Year, Month, Season from Variables including Date (Report, Loss, Closed Date)
+	
     b) Reshaped the entire dataset from 16 columns to 1968 columns with same rows.
-    c) Applied Textual Preprocessing and cleaning techniques to create features from CauseDescription Sentences
-    d) Using NLP - Bag of Words (Count/TF IDF Vectorizer) Transformed CauseDescription Sentences to Vector Representations
+    
+	c) Applied Textual Preprocessing and cleaning techniques to create features from CauseDescription Sentences
+    
+	d) Using NLP - Bag of Words (Count/TF IDF Vectorizer) Transformed CauseDescription Sentences to Vector Representations
